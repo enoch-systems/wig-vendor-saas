@@ -138,16 +138,27 @@ const Navbar = () => {
       {showSearchOverlay && <SearchOverlay />}
       
       <header
-        className="fixed top-0 left-0 right-0 z-40 w-full text-black font-semibold pt-3"
+        className="fixed top-0 left-0 right-0 z-40 w-full text-black font-semibold pt-5"
         style={{
           backgroundColor: 'white',
         }}
       >
-        <div className="relative max-w-7xl mx-auto px-4 py-6 flex justify-between items-center md:px-20">
-          {/* Mobile Menu Toggle */}
-          <button className="md:hidden z-20" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" aria-expanded={isOpen} aria-controls="mobile-menu">
-            <HamburgerIcon />
-          </button>
+        <div className="relative max-w-7xl mx-auto px-3 py-2 flex justify-between items-center md:px-20">
+          <div className="flex items-center md:hidden z-20">
+            {/* Mobile Menu Toggle */}
+            <button onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" aria-expanded={isOpen} aria-controls="mobile-menu" className="p-1">
+              <HamburgerIcon />
+            </button>
+
+            {/* Mobile Search Icon - Show only on mobile, right next to hamburger */}
+            <button 
+              onClick={() => setShowSearchOverlay(true)}
+              className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-gray-100 ml-2"
+              aria-label="Search"
+            >
+              <Search size={18} className="text-gray-600" strokeWidth={1.5} />
+            </button>
+          </div>
 
           {/* Desktop Menu Toggle */}
           <button className="hidden md:block z-20" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" aria-expanded={isOpen} aria-controls="mobile-menu">
@@ -155,16 +166,22 @@ const Navbar = () => {
           </button>
 
           {/* Logo - Centered */}
-          <Link to="/" className="flex items-center absolute left-1/2 transform -translate-x-1/2 z-10">
-            <img src={logo} alt="Logo" className="h-12 w-auto" width="48" height="48" loading="eager" fetchPriority="high" decoding="sync" style={{objectFit: 'contain'}} />
-          </Link>
+          <button 
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              navigate('/');
+            }}
+            className="flex items-center absolute left-1/2 transform -translate-x-1/2 z-10 bg-transparent border-none cursor-pointer"
+          >
+            <img src={logo} alt="Logo" className="h-10 w-auto" width="40" height="40" loading="eager" fetchPriority="high" decoding="sync" style={{objectFit: 'contain'}} />
+          </button>
 
           {/* Right side icons */}
           <div className="flex items-center gap-4 z-20">
-            {/* Search Icon */}
+            {/* Search Icon - Hide on mobile (shown above) */}
             <button 
               onClick={() => setShowSearchOverlay(true)}
-              className="flex items-center justify-center h-10 w-10 rounded-full hover:bg-gray-100"
+              className="hidden md:flex items-center justify-center h-10 w-10 rounded-full hover:bg-gray-100"
               aria-label="Search"
             >
               <Search size={20} className="text-gray-600" strokeWidth={1.5} />
@@ -177,9 +194,9 @@ const Navbar = () => {
                 className="flex items-center relative"
                 aria-label="Go to checkout"
               >
-                <div className="relative inline-flex items-center justify-center h-10 w-10 rounded-full hover:bg-gray-100">
-                  <ShoppingCart size={20} className="text-gray-600" strokeWidth={1.5} />
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">{cart.count || 0}</span>
+                <div className="relative inline-flex items-center justify-center h-10 w-8 rounded-full hover:bg-gray-100">
+                  <ShoppingCart size={18} className="text-gray-600" strokeWidth={1.5} />
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">{cart.count || 0}</span>
                 </div>
               </button>
             )}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Package, PackageOpen, CheckCircle, Clock, Truck, AlertCircle, ChevronDown, X, Calendar, ShoppingCart, CircleUserRound } from 'lucide-react';
+import { Package, PackageOpen, CheckCircle, Clock, Truck, AlertCircle, ChevronDown, X, Calendar, ShoppingCart, CircleUserRound, Timer, PackageCheck, Hourglass } from 'lucide-react';
 
 const RecentOrders = ({ setActiveTab }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -40,24 +40,24 @@ const RecentOrders = ({ setActiveTab }) => {
         label: 'Delivered'
       },
       processing: {
-        icon: Clock,
-        color: 'text-blue-600',
-        bgColor: 'bg-blue-100',
-        borderColor: 'border-blue-200',
+        icon: Timer,
+        color: 'text-gray-800',
+        bgColor: 'bg-gray-100',
+        borderColor: 'border-gray-200',
         label: 'Processing'
       },
       shipped: {
-        icon: Truck,
-        color: 'text-purple-600',
-        bgColor: 'bg-purple-100',
-        borderColor: 'border-purple-200',
+        icon: PackageCheck,
+        color: 'text-gray-800',
+        bgColor: 'bg-gray-100',
+        borderColor: 'border-gray-200',
         label: 'Shipped'
       },
       pending: {
-        icon: AlertCircle,
-        color: 'text-amber-600',
-        bgColor: 'bg-amber-100',
-        borderColor: 'border-amber-200',
+        icon: Hourglass,
+        color: 'text-gray-800',
+        bgColor: 'bg-gray-100',
+        borderColor: 'border-gray-200',
         label: 'Pending'
       }
     };
@@ -105,49 +105,27 @@ const RecentOrders = ({ setActiveTab }) => {
             return (
               <div 
                 key={order.id} 
-                className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 p-4"
+                className="bg-white rounded-md border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 p-2"
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
-                    <span className="font-mono text-sm font-semibold text-gray-900">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-1">
+                    <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                    <span className="font-mono text-xs font-semibold text-gray-900">
                       {order.id}
                     </span>
                   </div>
-                  <div className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full border ${statusConfig.bgColor} ${statusConfig.borderColor}`}>
-                    <StatusIcon className={`w-3.5 h-3.5 ${statusConfig.color}`} />
-                    <span className={`text-xs font-medium ${statusConfig.color}`}>
+                  <div className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full border ${statusConfig.bgColor} ${statusConfig.borderColor}`}>
+                    <StatusIcon className={`w-3 h-3 text-gray-800`} />
+                    <span className={`text-xs font-medium text-gray-800`}>
                       {statusConfig.label}
                     </span>
                   </div>
                 </div>
                 
-                <div className="space-y-2 mb-3">
-                  <div className="flex items-center text-sm text-gray-700">
-                    <span className="font-medium">Customer:</span>
-                    <span className="ml-2 text-gray-900">{order.customer}</span>
-                  </div>
-                  
-                  <div className="flex items-center text-sm text-gray-700">
-                    <span className="font-medium">Amount:</span>
-                    <span className="ml-2 text-gray-900 font-bold">{formatCurrency(order.amount)}</span>
-                  </div>
-                  
-                  <div className="flex items-center text-sm text-gray-700">
-                    <span className="font-medium">Items:</span>
-                    <span className="ml-2 text-gray-900">{order.items.length}</span>
-                  </div>
-                  
-                  <div className="flex items-center text-sm text-gray-700">
-                    <span className="font-medium">Date:</span>
-                    <span className="ml-2 text-gray-900">{order.date}</span>
-                  </div>
-                </div>
-                
                 <div className="flex justify-center">
-                  <button onClick={() => setSelectedOrder(order)} className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100 hover:border-blue-300 transition-colors">
+                  <button onClick={() => setSelectedOrder(order)} className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-800 bg-gray-50 border border-gray-200 rounded-md hover:bg-gray-100 hover:border-gray-300 transition-colors">
                     View order details
-                    <ChevronDown size={12} />
+                    <ChevronDown size={10} />
                   </button>
                 </div>
               </div>
@@ -163,7 +141,7 @@ const RecentOrders = ({ setActiveTab }) => {
             </p>
             <button 
               onClick={() => setActiveTab('orders')}
-              className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors duration-150"
+              className="text-xs font-medium text-gray-800 hover:text-gray-700 transition-colors duration-150"
             >
               View all orders →
             </button>
@@ -174,10 +152,10 @@ const RecentOrders = ({ setActiveTab }) => {
       {/* Order Details Modal */}
       {selectedOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto" style={{ backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}>
-          <div className="fixed inset-0 bg-black/30 sm:hidden" onClick={() => setSelectedOrder(null)}></div>
-          <div className="fixed inset-0 sm:relative bg-white rounded-xl shadow-xl w-full max-w-3xl border border-gray-100 sm:my-4 sm:mx-auto sm:max-h-[calc(100vh-2rem)] sm:overflow-y-auto pt-30 sm:pt-0">
+          <div className="fixed inset-0 bg-black/30" onClick={() => setSelectedOrder(null)}></div>
+          <div className="relative bg-white rounded-xl shadow-xl w-full h-full max-w-full border border-gray-100 overflow-y-auto">
             {/* Header */}
-            <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
+            <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 sticky top-0 z-20">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
@@ -275,7 +253,7 @@ const RecentOrders = ({ setActiveTab }) => {
                                 value={status}
                                 checked={tempOrderStatus === status}
                                 onChange={(e) => setTempOrderStatus(e.target.value)}
-                                className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                                className="w-4 h-4 text-gray-800 border-gray-300 focus:ring-gray-500"
                               />
                               <span className={`text-sm font-medium capitalize ${getStatusConfig(status).color}`}>
                                 {getStatusConfig(status).label}
@@ -344,7 +322,7 @@ const RecentOrders = ({ setActiveTab }) => {
                         setEditingOrderStatus(true);
                         setTempOrderStatus(selectedOrder.status);
                       }}
-                      className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors font-medium text-sm"
+                      className="px-4 py-2 bg-gray-50 text-gray-800 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors font-medium text-sm"
                     >
                       Update Order
                     </button>

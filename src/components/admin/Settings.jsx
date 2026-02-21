@@ -21,6 +21,7 @@ const Settings = () => {
   const [editingSection, setEditingSection] = useState(null);
   const [tempData, setTempData] = useState(null);
 
+  // Always call hooks, even if component might not render
   const handleInputChange = (field, value) => {
     setTempData(prev => ({
       ...prev,
@@ -48,6 +49,11 @@ const Settings = () => {
 
   const data = editingSection ? tempData : formData;
 
+  // Early return if data is not available
+  if (!data) {
+    return <div className="p-8">Loading...</div>;
+  }
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Profile Header */}
@@ -68,13 +74,6 @@ const Settings = () => {
           <p className="text-sm text-gray-600 mb-2">User ID: 675-31</p>
           <p className="text-sm text-gray-600 mb-2"><MapPin size={16} className="inline mr-1" />{data.businessName}{data.city}</p>
           
-          <button
-            onClick={() => startEditing('profile')}
-            className="text-blue-600 hover:text-blue-700 border border-gray-300 rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-gray-50 w-full justify-center"
-          >
-            <Edit size={18} />
-            Edit
-          </button>
         </div>
       </div>
 
@@ -169,13 +168,6 @@ const Settings = () => {
               <p className="text-sm font-medium">{data.bio}</p>
             </div>
 
-            <button
-              onClick={() => startEditing('personal')}
-              className="w-full text-blue-600 hover:text-blue-700 border border-gray-300 rounded-lg px-4 py-2 flex items-center justify-center gap-2 hover:bg-gray-50 mt-6"
-            >
-              <Edit size={18} />
-              Edit
-            </button>
           </div>
         )}
       </div>
@@ -245,13 +237,6 @@ const Settings = () => {
               <p className="text-sm font-medium">{data.postalCode}</p>
             </div>
 
-            <button
-              onClick={() => startEditing('address')}
-              className="w-full text-blue-600 hover:text-blue-700 border border-gray-300 rounded-lg px-4 py-2 flex items-center justify-center gap-2 hover:bg-gray-50 mt-6"
-            >
-              <Edit size={18} />
-              Edit
-            </button>
           </div>
         )}
       </div>

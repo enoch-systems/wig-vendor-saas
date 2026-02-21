@@ -17,7 +17,7 @@
   border-radius: 8px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6), 0 0 18px rgba(255, 43, 43, 0.25);
   text-align: center;
-  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
 }
 
 .countdown-title {
@@ -28,7 +28,7 @@
 }
 
 .countdown-digits {
-  font-family: "Courier New", Courier, monospace;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 44px;
   letter-spacing: 6px;

@@ -70,6 +70,7 @@ const AdminDashboard = () => {
   });
   const [notifications, setNotifications] = useState(3);
   const [dateFilter, setDateFilter] = useState('all');
+  const [timeFilter, setTimeFilter] = useState('today');
   const [currentPage, setCurrentPage] = useState(1);
   const [ordersPerPage] = useState(6);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -611,7 +612,13 @@ export default Shop;`;
     revenueGrowth: 12.5,
     orderGrowth: 8.3,
     customerGrowth: 15.2,
-    productGrowth: 5.7
+    productGrowth: 5.7,
+    // Time-based order counts
+    todayOrders: 34,
+    yesterdayOrders: 28,
+    weekOrders: 156,
+    monthOrders: 678,
+    allOrders: 2300
   });
 
   // Mock data - initialize from localStorage if available
@@ -760,8 +767,45 @@ export default Shop;`;
     return `${displayHour}:${minutes} ${ampm}`;
   };
 
-  const StatCard = ({ title, value, icon: Icon, growth, isPositive }) => (
-    <div className="bg-gray-50 rounded-lg shadow-md p-6 border border-gray-200">
+  // Get order count based on time filter
+  const getOrderCountByTimeFilter = (filter) => {
+    switch (filter) {
+      case 'today': return stats.todayOrders;
+      case 'yesterday': return stats.yesterdayOrders;
+      case 'week': return stats.weekOrders;
+      case 'month': return stats.monthOrders;
+      case 'all': return stats.allOrders;
+      default: return stats.todayOrders;
+    }
+  };
+
+  // Get title based on time filter
+  const getOrdersTitleByFilter = (filter) => {
+    switch (filter) {
+      case 'today': return 'Total Orders ( Today )';
+      case 'yesterday': return 'Total Orders ( Yesterday )';
+      case 'week': return 'Total Orders ( Week )';
+      case 'month': return 'Total Orders ( Month )';
+      case 'all': return 'Total Orders';
+      default: return 'Total Orders ( Today )';
+    }
+  };
+
+  const StatCard = ({ title, value, icon: Icon, growth, isPositive, showDropdown, dropdownValue, onDropdownChange }) => (
+    <div className="bg-gray-50 rounded-lg shadow-md p-6 border border-gray-200 relative">
+      {showDropdown && (
+        <select 
+          value={dropdownValue}
+          onChange={(e) => onDropdownChange(e.target.value)}
+          className="absolute top-4 right-4 text-xs px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+          <option value="today">Today</option>
+          <option value="yesterday">Yesterday</option>
+          <option value="week">Week</option>
+          <option value="month">Month</option>
+          <option value="all">All</option>
+        </select>
+      )}
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm text-gray-600">{title}</p>
@@ -775,9 +819,11 @@ export default Shop;`;
             </div>
           )}
         </div>
-        <div className="bg-white p-3 rounded-lg shadow-sm">
-          <Icon size={24} className="text-gray-800" />
-        </div>
+        {!showDropdown && (
+          <div className="bg-white p-3 rounded-lg shadow-sm">
+            <Icon size={24} className="text-gray-800" />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -803,11 +849,14 @@ export default Shop;`;
             isPositive={stats.revenueGrowth > 0}
           />
           <StatCard 
-            title="Total Orders" 
-            value={stats.totalOrders} 
+            title={getOrdersTitleByFilter(timeFilter)}
+            value={getOrderCountByTimeFilter(timeFilter)}
             icon={ClockArrowDown} 
             growth={stats.orderGrowth}
             isPositive={stats.orderGrowth > 0}
+            showDropdown={true}
+            dropdownValue={timeFilter}
+            onDropdownChange={setTimeFilter}
           />
         </div>
 
@@ -1522,14 +1571,14 @@ export default Shop;`;
             </div>
             
             <div className="flex items-center space-x-4">
-              <Link to="#/shop" className="inline-flex items-center px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-1 sm:mr-4 mr-5"
+              <Link to="#/shop" className="inline-flex items-center px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-1 sm:mr-4 mr-7"
                       onClick={(e) => {
                         e.preventDefault();
                         console.log('Store clicked, navigating to shop...');
                         window.location.href = '#/shop';
                       }}>
-                <Store size={12} className="mr-1 sm:mr-4" />
-                <span>Store</span>
+                <Store size={12} className="mr-2 sm:mr-4" />
+                <span>Back to Store</span>
               </Link>
               
               <ProfileDropdown
