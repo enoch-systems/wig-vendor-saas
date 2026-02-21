@@ -278,9 +278,16 @@ const Navbar = () => {
           style={{ backgroundColor: 'white' }}
         >
           <div className="px-6 pt-6 pb-4 border-b border-gray-200">
-            <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-3">
+            <button 
+              onClick={() => {
+                setIsOpen(false);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                navigate('/');
+              }}
+              className="flex items-center gap-3 bg-transparent border-none cursor-pointer"
+            >
               <img src={logo} alt="Logo" className="h-10 w-auto mb-3" width="40" height="40" loading="eager" fetchPriority="high" decoding="sync" style={{objectFit: 'contain'}} />
-            </Link>
+            </button>
           </div>
 
           <div className="flex-1 overflow-auto">
