@@ -698,7 +698,6 @@ export default Shop;`;
     { id: 'overview', label: 'Overview', icon: Home },
     { id: 'products', label: 'Products', icon: ProductIcon },
     { id: 'orders', label: 'Orders', icon: OrderIcon },
-    { id: 'analytics', label: 'Analytics', icon: AnalyticsIcon },
     { id: 'settings', label: 'Settings', icon: SettingsIcon },
   ];
 
@@ -783,46 +782,47 @@ export default Shop;`;
     </div>
   );
 
-  const renderOverview = () => (
-    <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <StatCard 
-          title="Total Revenue" 
-          value={stats.totalRevenue} 
-          icon={Wallet} 
-          growth={stats.revenueGrowth}
-          isPositive={stats.revenueGrowth > 0}
-        />
-        <StatCard 
-          title="Total Orders" 
-          value={stats.totalOrders} 
-          icon={ClockArrowDown} 
-          growth={stats.orderGrowth}
-          isPositive={stats.orderGrowth > 0}
-        />
-        <StatCard 
-          title="Total Customers" 
-          value={stats.totalCustomers} 
-          icon={Users} 
-          growth={stats.customerGrowth}
-          isPositive={stats.customerGrowth > 0}
-        />
-        <StatCard 
-          title="Total Products" 
-          value={stats.totalProducts} 
-          icon={ShoppingBasket} 
-          growth={stats.productGrowth}
-          isPositive={stats.productGrowth > 0}
-        />
-      </div>
+  const renderOverview = () => {
+    const salesData = [
+      { name: 'Jan', value: 400000 },
+      { name: 'Feb', value: 300000 },
+      { name: 'Mar', value: 600000 },
+      { name: 'Apr', value: 800000 },
+      { name: 'May', value: 500000 },
+      { name: 'Jun', value: 700000 }
+    ];
 
-      <div className="grid grid-cols-1 gap-8">
-        <div>
-          <RecentOrders setActiveTab={setActiveTab} />
+    return (
+      <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <StatCard 
+            title="Total Revenue" 
+            value={stats.totalRevenue} 
+            icon={Wallet} 
+            growth={stats.revenueGrowth}
+            isPositive={stats.revenueGrowth > 0}
+          />
+          <StatCard 
+            title="Total Orders" 
+            value={stats.totalOrders} 
+            icon={ClockArrowDown} 
+            growth={stats.orderGrowth}
+            isPositive={stats.orderGrowth > 0}
+          />
+        </div>
+
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
+            <AnalyticsChart 
+              data={salesData} 
+              type="bar" 
+              title="Monthly Revenue" 
+            />
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderProducts = () => {
     const regenerateDescriptions = () => {
@@ -1404,53 +1404,14 @@ export default Shop;`;
       { name: 'Jun', value: 700000 }
     ];
 
-    const categoryData = [
-      { name: 'Human Hair', value: 45 },
-      { name: 'Synthetic', value: 30 },
-      { name: 'Lace Front', value: 15 },
-      { name: 'Closures', value: 10 }
-    ];
-
-    const orderTrendData = [
-      { name: 'Mon', value: 20 },
-      { name: 'Tue', value: 35 },
-      { name: 'Wed', value: 45 },
-      { name: 'Thu', value: 30 },
-      { name: 'Fri', value: 55 },
-      { name: 'Sat', value: 40 },
-      { name: 'Sun', value: 25 }
-    ];
-
     return (
       <div className="space-y-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
           <AnalyticsChart 
             data={salesData} 
             type="bar" 
             title="Monthly Revenue" 
           />
-          <AnalyticsChart 
-            data={categoryData} 
-            type="pie" 
-            title="Sales by Category" 
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold mb-4">Top Products</h3>
-            <div className="space-y-3">
-              {products.slice(0, 5).map((product, index) => (
-                <div key={product.id} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-sm font-medium text-gray-500">#{index + 1}</span>
-                    <span className="text-sm">{product.name}</span>
-                  </div>
-                  <span className="text-sm font-medium">{formatCurrency(product.price)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     );
@@ -1470,9 +1431,6 @@ export default Shop;`;
           </div>
           <div style={{ display: activeTab === 'orders' ? 'block' : 'none' }}>
             {renderOrders()}
-          </div>
-          <div style={{ display: activeTab === 'analytics' ? 'block' : 'none' }}>
-            {renderAnalytics()}
           </div>
           <div style={{ display: activeTab === 'settings' ? 'block' : 'none' }}>
             <Settings key="settings" />
