@@ -875,14 +875,6 @@ export default Shop;`;
               <span className="text-xs">Add Product</span>
             </button>
             <button
-              onClick={regenerateDescriptions}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-2 py-2 rounded-lg flex items-center justify-center space-x-1 transition-all duration-200 shadow-sm"
-              title="Regenerate descriptions"
-            >
-              <RefreshCw size={14} />
-              <span className="text-xs">Refresh Desc</span>
-            </button>
-            <button
               onClick={toggleRemoveMode}
               className={`${removeMode ? 'bg-green-300 text-green-900' : 'bg-red-300 text-red-900'} px-2 py-2 rounded-lg flex items-center justify-center space-x-1 transition-all duration-200 shadow-sm`}
             >
